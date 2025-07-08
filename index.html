@@ -4,72 +4,180 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portfolio - Léo Clerc</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <!-- Lucide Icons -->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/lucide@0.264.0/dist/esm/lucide.min.js"></script>
   <style>
-    /* Reset basique */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; line-height: 1.6; background: #f4f4f4; color: #333; }
-    header { background: #333; color: #fff; padding: 20px 0; text-align: center; }
-    nav ul { list-style: none; display: flex; justify-content: center; }
-    nav ul li { margin: 0 15px; }
-    nav a { color: #fff; text-decoration: none; font-weight: bold; }
-    section { padding: 60px 20px; max-width: 1000px; margin: auto; }
-    .projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-    .project-card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    .contact-form input, .contact-form textarea { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; }
-    .contact-form button { display: inline-block; background: #333; color: #fff; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
-    footer { text-align: center; padding: 20px 0; background: #222; color: #fff; }
+    /* Variables de thème */
+    :root {
+      --bg: #001f3f; /* Bleu marine */
+      --text: #eee;
+      --card: #fff;
+      --accent: #7c3aed;
+      --card-shadow: rgba(0,0,0,0.2);
+    }
+    body.dark {
+      /* Conserver un fond sombre en dark mode */
+      --bg: #001f3f;
+      --text: #eee;
+      --card: #1e1e1e;
+      --card-shadow: rgba(0,0,0,0.7);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+      position: relative;
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    /* Particules en fond */
+    #particles-js { position:absolute; width:100%; height:100%; top:0; left:0; z-index:-1; }
+    header {
+      text-align:center;
+      padding:4rem 1rem;
+    }
+    header h1 {
+      font-size:3rem;
+      font-weight:700;
+      background: linear-gradient(90deg, #8b5cf6, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    header p { margin-top:0.5rem; font-weight:500; }
+    /* Dark Mode Toggle */
+    #toggle-theme {
+      position:fixed; top:1rem; right:1rem;
+      background: var(--card);
+      border:none; padding:0.5rem; border-radius:50%; cursor:pointer;
+      box-shadow:0 2px 8px var(--card-shadow);
+      transition: background 0.3s;
+    }
+    nav {
+      display:flex; justify-content:center; gap:2rem; padding:1rem;
+    }
+    nav a {
+      text-decoration:none; color:var(--text); font-weight:500;
+      display:inline-flex; align-items:center; gap:0.25rem;
+      transition:color 0.3s;
+    }
+    nav a:hover { color:var(--accent); }
+    section { padding:4rem 1rem; max-width:1000px; margin:0 auto; }
+    h2 { font-size:2.5rem; text-align:center; margin-bottom:2rem; }
+    /* Cartes projets */
+    .projects { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:2rem; }
+    .card {
+      background:var(--card);
+      padding:1.5rem; border-radius:1rem;
+      box-shadow:0 4px 12px var(--card-shadow);
+      transition:transform 0.3s, border 0.3s;
+      border:2px solid transparent;
+    }
+    .card:hover {
+      transform:translateY(-5px);
+      border-color:var(--accent);
+    }
+    .card h3 { margin-bottom:1rem; font-size:1.5rem; }
+    .card p { margin-bottom:1.5rem; line-height:1.4; }
+    .btn {
+      display:inline-block; padding:0.75rem 1.5rem; border-radius:0.5rem;
+      background:var(--accent); color:#fff; text-decoration:none;
+      font-weight:500; transition:background 0.3s;
+    }
+    .btn:hover { background:#9333ea; }
+    /* Formulaire */
+    .contact-form {
+      background:var(--card); padding:2rem; border-radius:1rem;
+      box-shadow:0 4px 12px var(--card-shadow);
+      max-width:600px; margin:0 auto;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width:100%; padding:0.75rem;
+      margin-bottom:1rem; border:1px solid #ccc; border-radius:0.5rem;
+      background:transparent; color:var(--text);
+    }
+    .contact-form button {
+      padding:0.75rem 2rem; border:none; border-radius:0.5rem;
+      background:var(--accent); color:#fff; cursor:pointer;
+      font-size:1rem; font-weight:500;
+    }
+    footer { text-align:center; padding:2rem 1rem; font-size:0.875rem; }
   </style>
 </head>
 <body>
-
+  <div id="particles-js"></div>
+  <button id="toggle-theme" aria-label="Toggle Theme">
+    <i data-lucide="sun"></i>
+  </button>
   <header>
     <h1>Léo Clerc</h1>
-    <p>Étudiant en 1ère année BTS SIO option SLAM</p>
-    <nav>
-      <ul>
-        <li><a href="#about">À propos</a></li>
-        <li><a href="#projects">Projets</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
+    <p>Étudiant BTS SIO 1ère année SLAM</p>
   </header>
-
-  <section id="about">
+  <nav>
+    <a href="#a-propos"><i data-lucide="user"></i><span>À propos</span></a>
+    <a href="#projets"><i data-lucide="code"></i><span>Projets</span></a>
+    <a href="#contact"><i data-lucide="mail"></i><span>Contact</span></a>
+  </nav>
+  <section id="a-propos">
     <h2>À propos de moi</h2>
-    <p>Bonjour ! Je suis Léo Clerc, étudiant en première année de BTS Services Informatiques aux Organisations, spécialité Solutions Logicielles et Applications Métiers (SLAM). Passionné de développement web et mobile, j'aime créer des applications intuitives et performantes.</p>
+    <p>Bonjour ! Je suis Léo Clerc, passionné de développement web et mobile. En première année de BTS SIO (SLAM), j'explore toujours de nouvelles technologies pour créer des expériences utilisateur fluides et immersives.</p>
   </section>
-
-  <section id="projects">
+  <section id="projets">
     <h2>Mes projets</h2>
     <div class="projects">
-      <!-- Exemple de projet -->
-      <div class="project-card">
-        <h3>Projet 1 - Site vitrine</h3>
-        <p>Description rapide du projet : création d'un site responsive pour une petite association.</p>
-        <a href="#" target="_blank">Voir le projet</a>
+      <div class="card">
+        <h3>Site Vitrine</h3>
+        <p>Site responsive pour une association locale.</p>
+        <a href="#" class="btn">Voir le projet</a>
       </div>
-      <div class="project-card">
-        <h3>Projet 2 - Application de gestion</h3>
-        <p>Développement d'une application en Java pour gérer le stock d'un magasin.</p>
-        <a href="#" target="_blank">Voir le projet</a>
+      <div class="card">
+        <h3>App de Gestion</h3>
+        <p>Application Java pour la gestion de stock.</p>
+        <a href="#" class="btn">Voir le projet</a>
       </div>
-      <!-- Ajouter d'autres projets ici -->
+      <div class="card">
+        <h3>Portfolio React</h3>
+        <p>Mon portfolio dynamique en React/Tailwind.</p>
+        <a href="#" class="btn">Voir le projet</a>
+      </div>
     </div>
   </section>
-
   <section id="contact">
     <h2>Contactez-moi</h2>
-    <form class="contact-form" action="#" method="post">
+    <form class="contact-form" action="#" method="POST">
       <input type="text" name="name" placeholder="Votre nom" required>
       <input type="email" name="email" placeholder="Votre email" required>
       <textarea name="message" rows="5" placeholder="Votre message" required></textarea>
       <button type="submit">Envoyer</button>
     </form>
   </section>
-
   <footer>
-    <p>&copy; 2025 Léo Clerc. Tous droits réservés.</p>
+    &copy; 2025 Léo Clerc. Tous droits réservés.
   </footer>
-
+  <script>
+    // Initialisation Particles.js
+    particlesJS('particles-js', {
+      "particles": { "number": { "value": 80 }, "size": { "value": 3 } },
+      "interactivity": { "events": { "onhover": { "enable": true, "mode": "repulse" } } }
+    });
+    // Icônes Lucide
+    lucide.replace();
+    // Dark mode toggle
+    const btn = document.getElementById('toggle-theme');
+    const userPref = localStorage.getItem('theme');
+    if (userPref) document.body.classList.toggle('dark', userPref === 'dark');
+    btn.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      const isDark = document.body.classList.contains('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : '');
+      lucide.replace();
+    });
+  </script>
 </body>
 </html>
